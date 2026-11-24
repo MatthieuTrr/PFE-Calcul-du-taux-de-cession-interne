@@ -35,7 +35,8 @@ Calculer le TCI du **Livret A**, en procédant par étapes :
 
 ```
 .
-├── credit_lineaire.py   # Échéancier d'un crédit à taux fixe amortissable linéairement
+├── src/                 # Code source du projet
+│   └── credit_lineaire.py   # Échéancier d'un crédit à taux fixe amortissable linéairement
 ├── data/                # Séries de données (voir « Données » ci-dessous)
 ├── notebooks/           # Explorations et graphiques
 ├── docs/                # Comptes rendus de réunion et présentations
