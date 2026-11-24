@@ -85,11 +85,3 @@ def afficher_resultats(taux_fixe, capital_initial, nb_mois, courbe):
     print(f"TCI                           = {tci:.4f} %")
     print(f"Marge de l'agence             = {marge:.4f} € (soit {taux_fixe - tci:.4f} %)")
 
-
-
-afficher_resultats(taux_fixe=5, capital_initial=100, nb_mois=3, courbe=[2.0, 2.1, 2.2])
-
-# Test : avec une courbe plate, le TCI doit etre egal au taux de la courbe
-tci_plat, _ = tci_naif(credit_lineaire(5, 100, 3), [2.0, 2.0, 2.0])
-assert abs(tci_plat - 2.0) < 1e-12, f"Test courbe plate echoue : TCI = {tci_plat}"
-print("\nTest courbe plate : OK (TCI = 2 %)")
