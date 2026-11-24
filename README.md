@@ -27,8 +27,9 @@ Calculer le TCI du **Livret A**, en procédant par étapes :
 
 1. **Crédit à taux fixe** à amortissement linéaire : construction de l'échéancier (capital restant dû, intérêts, mensualités).
 2. **TCI du crédit à taux fixe** : adossement de l'encours à la courbe des taux de marché.
-3. **Livret A** : séparation de l'encours en une part volatile et une part stable écoulée par strates, puis calcul du TCI du stock et de la production nouvelle, et enfin leur moyenne pondérée.
-4. **Validation** : comparaison avec un crédit fictif indexé sur le Livret A, avec des spreads fictifs.
+3. **TCI d'un crédit à taux variable** : calcul du TCI pour un produit un peu plus complexe.
+4. **Livret A** : séparation de l'encours en une part volatile et une part stable écoulée par strates, puis calcul du TCI du stock et de la production nouvelle, et enfin leur moyenne pondérée.
+5. **Validation** : comparaison avec un crédit fictif indexé sur le Livret A, avec des spreads fictifs.
 
 ## Structure du dépôt
 
