@@ -1,22 +1,9 @@
-"""Credit a taux fixe amortissable lineairement et calcul de son TCI (adossement flux par flux)."""
-
-
 def credit_lineaire(taux_fixe, capital_initial, nb_mois):
-    """Calcule l'echeancier d'un credit a amortissement lineaire.
-
-    taux_fixe : taux d'interet annuel du pret, en pourcentage (ex. 5 pour 5 %)
-    capital_initial : montant emprunte, en euros
-    nb_mois : nombre de mois sur lequel le pret est rembourse
-
-    Renvoie une liste de dictionnaires, un par mois, avec :
-    mois, crd_debut, interets, amortissement, mensualite, crd_fin
-    (crd = capital restant du).
-    """
+    """Calcul de l'échéancier du crédit linéaire taux fixe"""
     taux_mensuel = taux_fixe / 100 / 12
     amortissement = capital_initial / nb_mois
     echeancier = []
     for mois in range(1, nb_mois + 1):
-        # Calcul a partir du capital initial pour eviter les erreurs d'arrondi (-0.00 €)
         crd_debut = capital_initial - (mois - 1) * amortissement
         crd_fin = capital_initial - mois * amortissement
         interets = crd_debut * taux_mensuel
@@ -32,41 +19,24 @@ def credit_lineaire(taux_fixe, capital_initial, nb_mois):
 
 
 def tci_naif(echeancier, courbe):
-    """Calcule le TCI d'un credit taux fixe.
-
-    Chaque remboursement de capital du mois i est vu comme une tranche financee
-    par la tresorerie du mois 0 au mois i, au taux de marche de maturite i mois.
-
-    echeancier : liste renvoyee par credit_lineaire
-    courbe : liste des taux de marche annuels en pourcentage ;
-             courbe[i - 1] est le taux de maturite i mois
-             (ex. [2.0, 2.1, 2.2] : 1 mois = 2,0 %, 2 mois = 2,1 %, 3 mois = 2,2 %)
-
-    Renvoie (tci en %, cout total du financement en euros).
-    """
+    """Calcul du TCI pour le crédit linéaire taux fixe."""
     if len(courbe) < len(echeancier):
-        raise ValueError(
-            f"La courbe contient {len(courbe)} taux, il en faut au moins {len(echeancier)} "
-            "(un par mois de l'echeancier)."
-        )
+        raise ValueError(f"La courbe contient {len(courbe)} taux, il en faut {len(echeancier)}.")
 
-    # Cout reel du financement : chaque tranche x son taux de marche x sa duree (en annees)
     cout_financement = 0.0
     for ligne in echeancier:
         mois = ligne["mois"]
         taux_marche = courbe[mois - 1] / 100
         cout_financement += ligne["amortissement"] * taux_marche * mois / 12
 
-    # Encours dans le temps : somme des capitaux restant dus x duree de chaque mois
     encours_temps = sum(ligne["crd_debut"] / 12 for ligne in echeancier)
 
-    # TCI : taux unique qui, applique a l'encours, redonne le cout reel du financement
     tci = cout_financement / encours_temps * 100
     return tci, cout_financement
 
 
 def afficher_resultats(taux_fixe, capital_initial, nb_mois, courbe):
-    """Affiche l'echeancier, le TCI et la marge de l'agence."""
+    """Affiche les résultats"""
     echeancier = credit_lineaire(taux_fixe, capital_initial, nb_mois)
 
     print(f"Credit lineaire : {capital_initial} € sur {nb_mois} mois au taux fixe de {taux_fixe} %")
@@ -84,4 +54,3 @@ def afficher_resultats(taux_fixe, capital_initial, nb_mois, courbe):
     print(f"Cout du financement           = {cout_financement:.4f} €")
     print(f"TCI                           = {tci:.4f} %")
     print(f"Marge de l'agence             = {marge:.4f} € (soit {taux_fixe - tci:.4f} %)")
-
